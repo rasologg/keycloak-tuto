@@ -1,0 +1,155 @@
+{
+  "allowRemoteResourceManagement": true,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "Default Resource",
+      "type": "urn:keycloak-tuto:resources:default",
+      "ownerManagedAccess": false,
+      "attributes": {},
+      "_id": "a3caca22-a856-4189-9287-80c85a78e745",
+      "uris": [
+        "/*"
+      ]
+    },
+    {
+      "name": "movies",
+      "ownerManagedAccess": false,
+      "displayName": "movies",
+      "attributes": {},
+      "_id": "645cc444-00a1-4650-9a73-3a56332ad868",
+      "uris": [
+        "/movies/*"
+      ],
+      "scopes": [
+        {
+          "name": "add"
+        },
+        {
+          "name": "view"
+        },
+        {
+          "name": "update"
+        },
+        {
+          "name": "delete"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "a28ae281-680a-4012-ac0d-89cab0f0eca1",
+      "name": "Default Policy",
+      "description": "A policy that grants access only for users within this realm",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+      }
+    },
+    {
+      "id": "d54bab56-8042-4ce0-97d4-52f6722fc286",
+      "name": "has_role_children",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"keycloak-tuto/ROLE_CHILDREN\",\"required\":false},{\"id\":\"ROLE_CHILDREN\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "dc74233f-3bcc-423a-9d55-6ff7b088c8d9",
+      "name": "has_role_admin",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"ROLE_ADMINISTRATOR\",\"required\":false},{\"id\":\"keycloak-tuto/ROLE_ADMINISTRATOR\",\"required\":false}]"
+      }
+    },
+    {
+      "id": "c38f5518-18a6-470f-9c2b-cc082bfe56ef",
+      "name": "Default Permission",
+      "description": "A permission that applies to the default resource type",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "urn:keycloak-tuto:resources:default",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    },
+    {
+      "id": "aab873c9-c964-4106-9eff-868cd86ec34c",
+      "name": "delete permission",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"movies\"]",
+        "scopes": "[\"delete\"]",
+        "applyPolicies": "[\"has_role_admin\"]"
+      }
+    },
+    {
+      "id": "540f375c-802f-45d2-a494-30bae89523e4",
+      "name": "add permission",
+      "description": "add permission",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"movies\"]",
+        "scopes": "[\"add\"]",
+        "applyPolicies": "[\"has_role_admin\"]"
+      }
+    },
+    {
+      "id": "10063d73-a3da-483f-b1cb-7a064575896a",
+      "name": "update permission",
+      "description": "update permission",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"movies\"]",
+        "scopes": "[\"update\"]",
+        "applyPolicies": "[\"has_role_admin\"]"
+      }
+    },
+    {
+      "id": "84f5b92d-75f0-4889-a665-a45908bd68eb",
+      "name": "view permission",
+      "description": "view permission",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"movies\"]",
+        "scopes": "[\"view\"]",
+        "applyPolicies": "[\"has_role_children\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "id": "eb79c3ac-c2f6-4183-b64c-8ed2902c5bec",
+      "name": "view"
+    },
+    {
+      "id": "ba56be15-5342-49cb-aa91-18354c38f8b0",
+      "name": "delete"
+    },
+    {
+      "id": "05c614f1-f707-481b-8e57-a1800cc7ab33",
+      "name": "add"
+    },
+    {
+      "id": "e49727a2-d132-44ce-9a88-5fa88c7334c1",
+      "name": "update"
+    }
+  ],
+  "decisionStrategy": "UNANIMOUS"
+}
